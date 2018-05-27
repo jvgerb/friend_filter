@@ -1,0 +1,22 @@
+body {
+    font: 16px Helvetica;
+}
+
+.friends {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.friend {
+    width: 100px;
+    margin: 0 40px 40px 0;
+    text-align: center;
+}
+
+.friend img {
+    border-radius: 50%;
+}
+
+.hello {
+    color: red;
+}
