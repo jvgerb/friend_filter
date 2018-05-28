@@ -4,6 +4,7 @@
 //   - разрешить выполнять действия от нашего имени
 
 import templateFunc from '../friends.hbs';
+import 'styles.css';
 
 VK.init({
     apiId: 6491689
@@ -47,7 +48,6 @@ function callAPI(method, params) {
         var friends = await callAPI('friends.get', { fields: 'city, country, photo_100', order: 'name' });
 
         const html = templateFunc(friends);
-
         const results = document.querySelector('#results');
         results.innerHTML = html;
 
