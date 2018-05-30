@@ -1,17 +1,8 @@
-let webpack = require('webpack');
 let HtmlPlugin = require('html-webpack-plugin');
 let CleanWebpackPlugin = require('clean-webpack-plugin');
-let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let rules = require('./webpack.config.rules')();
 let path = require('path');
-
-rules.push({
-    test: /\.css$/,
-    use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: 'css-loader'
-    })
-});
+// let webpack = require('webpack');
 
 module.exports = {
     entry: './src/index.js',
@@ -22,17 +13,16 @@ module.exports = {
     devtool: 'source-map',
     module: { rules },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true,
-            compress: {
-                drop_debugger: false,
-                warnings: false
-            }
-        }),
-        new ExtractTextPlugin('styles.css'),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     sourceMap: true,
+        //     compress: {
+        //         drop_debugger: false,
+        //         warnings: false
+        //     }
+        // }),
         new HtmlPlugin({
-            title: 'VK sample project',
-            template: 'index.hbs'
+            title: 'Friend Filter',
+            template: 'views/index.hbs'
         }),
         new CleanWebpackPlugin(['dist'])
     ]
