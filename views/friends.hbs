@@ -1,8 +1,11 @@
 <div class="friends">
     {{#each items}}
     <div class="friend">
-        <img src="{{photo_100}}"/>
-        <div>{{first_name}} {{last_name}}</div>
+        <img class="friend_img" src="{{photo_100}}"/>
+        <div class="friend_text">{{first_name}} {{last_name}}</div>
+        <div class="friend_plus">
+            <img src="src/icons/plus.png" alt="plus">
+        </div>
     </div>
     {{/each}}
 </div>

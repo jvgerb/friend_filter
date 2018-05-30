@@ -1,20 +1,19 @@
 import friendsRenderFunc from '../views/friends.hbs';
-import headerRenderFunc from '../views/header.hbs';
 
 export default function View() {
 
     // мэппинг между именем шаблона и функцией рендера
     const renderMap = new Map(
         [
-            ['friends', friendsRenderFunc],
-            ['header', headerRenderFunc]
+            ['friends-left', friendsRenderFunc],
+            //['header', headerRenderFunc]
         ]);
 
     // мэппинг между именем шаблона и его хтмл-элементом
     const containerMap = new Map(
         [
-            ['friends', document.querySelector('#results')],
-            ['header', document.querySelector('#headerInfo')]
+            ['friends-left', document.querySelector('#lists-left')],
+            //['header', document.querySelector('#headerInfo')]
         ]);
 
     /**
@@ -36,12 +35,8 @@ export default function View() {
     };
 
     return {
-
-        renderHeader(user) {
-            render('header', user);
-        },
-        renderFriends(friends) {
-            render('friends', friends);
+        renderFriendsLeft(friends) {
+            render('friends-left', friends);
         }
     };
 }
