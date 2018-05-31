@@ -57,7 +57,9 @@ export default class View extends EventEmitter {
     }
 
     initListeners() {
-        this.searchFriend.addEventListener('keydown', e => this.emit('searchFriend', e.target.value));
-        this.searchSelectedFriend.addEventListener('keydown', e => this.emit('searchSelectedFriend', e.target.value));
+        this.searchFriend.addEventListener('keyup', e => {
+            this.emit('searchFriend', e.target.value);
+        });
+        this.searchSelectedFriend.addEventListener('keyup', e => this.emit('searchSelectedFriend', e.target.value));
     }
 }

@@ -16,11 +16,8 @@ export default class NewController {
             .catch((e) => console.error(e));
 
         // добавляем замедление поиска
-        //this.onFriendSearch = debounce(this.onFriendSearch.bind(this), 250);
-        // this.onSelectedFriendSearch = debounce(this.onSelectedFriendSearch.bind(this), 250);
-
-        //this.onFriendSearch = this.onFriendSearch;
-        //this.onSelectedFriendSearch = this.onSelectedFriendSearch;
+        this.onFriendSearch = debounce(this.onFriendSearch.bind(this), 250);
+        this.onSelectedFriendSearch = debounce(this.onSelectedFriendSearch.bind(this), 250);
     }
 
     login() {
@@ -59,8 +56,6 @@ export default class NewController {
         // добавить debounce при выполнении поиска
         this.view.on('searchFriend', (searchKey) =>
             this.onFriendSearch(searchKey)
-            // TODO
-            // debounce(() => this.onFriendSearch(searchKey), 500)()
         );
 
         // при выполнении поиска справа, нужно заставить контроллер обновить модель отфильтрованными данными

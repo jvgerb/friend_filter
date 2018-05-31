@@ -24,12 +24,11 @@ export default class NewModel extends EventEmitter {
     }
 
     searchBy({ modelField, searchField, value }) {
-        console.log(value);
 
         return this[modelField].filter((item) => {
             const itemField = item[searchField].toLowerCase();
 
-            return !!~itemField.indexOf(value.toLowerCase());
+            return itemField.includes(value.toLowerCase());
         });
     }
 
@@ -72,17 +71,15 @@ export default class NewModel extends EventEmitter {
     }
 
     filterFriends(searchKey) {
-        console.log(searchKey);
         if (!searchKey) {
             this.update('filteredFriends', this.friends);
 
             return;
         }
-
         const filtered = this.searchBy({
             modelField: 'friends',
             searchField: 'name',
-            searchKey
+            value: searchKey
         });
 
         this.update('filteredFriends', filtered);
@@ -98,7 +95,7 @@ export default class NewModel extends EventEmitter {
         const filtered = this.searchBy({
             modelField: 'selectedFriends',
             searchField: 'name',
-            searchKey
+            value: searchKey
         });
 
         this.update('filteredSelectedFriends', filtered);
