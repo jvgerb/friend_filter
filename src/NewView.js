@@ -69,14 +69,14 @@ export default class View extends EventEmitter {
 
         // добавление друга
         this.listLeft.addEventListener('click', e => {
-            if (e.target.tagName === 'IMG') {
+            if (e.target.tagName === 'IMG' && e.target.getAttribute('alt') === 'plus') {
                 this.emit('selectFriend', e.target.name);
             }
         });
 
         // удаление друга
         this.listRight.addEventListener('click', e => {
-            if (e.target.tagName === 'IMG') {
+            if (e.target.tagName === 'IMG' && e.target.getAttribute('alt') === 'minus') {
                 this.emit('deselectFriend', e.target.name);
             }
         });

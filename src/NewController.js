@@ -70,7 +70,7 @@ export default class NewController {
         );
 
         // удаление друга из правого списка (и его возврат в левый список)
-        this.view.on('selectFriend', (id) =>
+        this.view.on('deselectFriend', (id) =>
             this.model.deselectFriend(id)
         );
     }
