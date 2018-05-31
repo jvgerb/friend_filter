@@ -6,6 +6,11 @@ export default class View extends EventEmitter {
     constructor() {
         super();
 
+        this.searchFriend = document.querySelector('#search_left');
+        this.searchSelectedFriend = document.querySelector('#search_right');
+        this.listLeft = document.querySelector('#lists-left');
+        this.listRight = document.querySelector('#lists-right');
+
         // мэппинг между именем шаблона и функцией рендера
         this.renderMap = new Map(
             [
@@ -16,12 +21,9 @@ export default class View extends EventEmitter {
         // мэппинг между именем шаблона и его хтмл-элементом
         this.containerMap = new Map(
             [
-                ['friends-left', document.querySelector('#lists-left')],
-                ['friends-right', document.querySelector('#lists-right')]
+                ['friends-left', this.listLeft],
+                ['friends-right', this.listRight]
             ]);
-
-        this.searchFriend = document.querySelector('#search_left');
-        this.searchSelectedFriend = document.querySelector('#search_right');
 
         // регистрация обработчиков для связи view с контроллером,
         // т.к. view не имеет полномочий напрямую обновить данные в модели
@@ -57,9 +59,26 @@ export default class View extends EventEmitter {
     }
 
     initListeners() {
-        this.searchFriend.addEventListener('keyup', e => {
-            this.emit('searchFriend', e.target.value);
+        // поиск слева
+        this.searchFriend.addEventListener('keyup', e =>
+            this.emit('searchFriend', e.target.value));
+
+        // поиск справа
+        this.searchSelectedFriend.addEventListener('keyup', e =>
+            this.emit('searchSelectedFriend', e.target.value));
+
+        // добавление друга
+        this.listLeft.addEventListener('click', e => {
+            if (e.target.tagName === 'IMG') {
+                this.emit('selectFriend', e.target.name);
+            }
         });
-        this.searchSelectedFriend.addEventListener('keyup', e => this.emit('searchSelectedFriend', e.target.value));
+
+        // удаление друга
+        this.listRight.addEventListener('click', e => {
+            if (e.target.tagName === 'IMG') {
+                this.emit('deselectFriend', e.target.name);
+            }
+        });
     }
 }

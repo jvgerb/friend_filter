@@ -100,4 +100,19 @@ export default class NewModel extends EventEmitter {
 
         this.update('filteredSelectedFriends', filtered);
     }
+
+    selectFriend(id) {
+        // удаляем друга из общего и фильтрованного списка людей слева
+
+
+        // добавляем друга в общий список справа и применяем фильтр справа
+
+    }
+
+    deSelectFriend(id) {
+        // удаляем друга из общего и фильтрованного списка людей справа
+
+
+        // добавляем друга в общий список слева и применяем фильтр слева
+    }
 }

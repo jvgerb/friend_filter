@@ -63,5 +63,15 @@ export default class NewController {
         // добавить debounce при выполнении поиска
         this.view.on('searchSelectedFriend', (searchKey) =>
             this.onSelectedFriendSearch(searchKey));
+
+        // добавление друга в правый список (и его исключение из левого списка)
+        this.view.on('selectFriend', (id) =>
+            this.model.selectFriend(id)
+        );
+
+        // удаление друга из правого списка (и его возврат в левый список)
+        this.view.on('selectFriend', (id) =>
+            this.model.deselectFriend(id)
+        );
     }
 }
