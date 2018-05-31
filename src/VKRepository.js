@@ -1,4 +1,4 @@
-export default function Model(VK) {
+export default function VKReporsitory(VK) {
 
     return {
         login(appId, perms) {

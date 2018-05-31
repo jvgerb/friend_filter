@@ -9,22 +9,15 @@ import './styles/index.scss';
 // START YOUR APP HERE
 // ================================
 
-import View from './View';
-import Model from './Model';
-import Controller from './Controller';
+import NewView from './NewView';
+import NewModel from './NewModel';
+import NewController from './NewController';
+import VKRepository from './VKRepository';
 
-const model = new Model(VK);
-const view = new View();
+const model = new NewModel();
+const view = new NewView();
+const vkRepository = new VKRepository(VK);
 
-const controller = new Controller(view, model);
-
-(async() => {
-    try {
-        const login = await controller.login();
-        const fr = await controller.renderFriends();
-    } catch (e) {
-        console.error(e);
-    }
-})();
+const controller = new NewController(view, model, vkRepository);
 
 export default controller;
