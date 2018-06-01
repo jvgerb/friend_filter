@@ -4,9 +4,11 @@
 export default class LocalReporsitory {
 
     getFriendsList() {
-        return localStorage.selectedFriends ?
-            JSON.parse(localStorage.selectedFriends) :
-            [];
+        if (!localStorage.selectedFriends) {
+            return [];
+        }
+
+        return JSON.parse(localStorage.selectedFriends) || [];
     }
 
     saveFriendsList(friends) {
@@ -14,6 +16,6 @@ export default class LocalReporsitory {
     }
 
     deleteFriendsList() {
-        localStorage.selectedFriends = null;
+        localStorage.selectedFriends = [];
     }
 }

@@ -58,7 +58,17 @@ export default class NewModel extends EventEmitter {
     // selectedFriends - грузятся из localStorage
     init(friends, selectedFriends) {
 
+        // добавляем левому списку друзей поле name, более удобное для поиска по строке
         addNameField(friends);
+
+        // если в сохраненном списке есть друзья, то надо их убрать из левого списка
+        if (selectedFriends.length > 0) {
+            selectedFriends.forEach(item => {
+                const index = getFriendIndexById(friends, item.id);
+
+                friends.splice(index, 1);
+            })
+        }
 
         this.update('friends', friends);
         this.update('filteredFriends', [...friends]);

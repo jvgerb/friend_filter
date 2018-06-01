@@ -15,6 +15,8 @@ export default class View extends EventEmitter {
         this.listRight = document.querySelector('#lists-right');
         this.saveBtn = document.querySelector('#save');
         this.deleteBtn = document.querySelector('#delete');
+        this.leftPanel = document.querySelector('#lists-left-panel');
+        this.rightPanel = document.querySelector('#lists-right-panel');
 
         // мэппинг между именем шаблона и функцией рендера
         this.renderMap = new Map(
@@ -78,14 +80,14 @@ export default class View extends EventEmitter {
         // добавление друга
         this.listLeft.addEventListener('click', e => {
             if (e.target.tagName === 'IMG' && e.target.getAttribute('alt') === 'plus') {
-                this.emit('selectFriend', e.target.name);
+                this.emit('selectFriend', e.target.getAttribute('name'));
             }
         });
 
         // удаление друга
         this.listRight.addEventListener('click', e => {
             if (e.target.tagName === 'IMG' && e.target.getAttribute('alt') === 'minus') {
-                this.emit('deselectFriend', e.target.name);
+                this.emit('deselectFriend', e.target.getAttribute('name'));
             }
         });
 
@@ -98,5 +100,54 @@ export default class View extends EventEmitter {
         this.deleteBtn.addEventListener('click', e => {
             this.emit('delete', e.target);
         });
+
+        setupDnD([this.leftPanel, this.rightPanel], this);
     }
+}
+
+/**
+ * Настройка drag'n'drop для правого и левого списка друзей
+ * @param {Array} items - левый и правый div, содержащие в себе списки друзей
+ */
+function setupDnD(items, self) {
+    let currentDrag;
+
+    items.forEach(item => {
+
+        // захват дива с другом 
+        item.addEventListener('dragstart', e => {
+            currentDrag = { source: item, friendId: e.target.getAttribute('name') };
+        });
+
+        // перетаскивание дива
+        item.addEventListener('dragover', e => {
+            e.preventDefault();
+        });
+
+        // перетаскивание дива
+        // item.addEventListener('dragenter', e => {
+        //     e.preventDefault();
+
+        //     return false;
+        // });
+
+        // отпускание дива с другом
+        item.addEventListener('drop', e => {
+            if (currentDrag) {
+                e.preventDefault();
+
+                if (currentDrag.source !== item) {
+                    if (item.getAttribute('id') === 'lists-right-panel') {
+                        // если отпустили над правой панелью, добавляем друга в список
+                        self.emit('selectFriend', currentDrag.friendId);
+                    } else if (item.getAttribute('id') === 'lists-left-panel') {
+                        // если отпустили над левой панелью, удаляем друга из списка
+                        self.emit('deselectFriend', currentDrag.friendId);
+                    }
+
+                    currentDrag = null;
+                }
+            }
+        });
+    });
 }

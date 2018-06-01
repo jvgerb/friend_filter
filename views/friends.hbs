@@ -1,10 +1,10 @@
 <div class="friends">
     {{#each items}}
-    <div class="friend">
-        <img class="friend_img" src="{{photo_100}}"/>
+    <div class="friend" draggable="true" name={{id}}>
+        <img class="friend_img" src="{{photo_100}}" draggable="false"/>
         <div class="friend_text">{{first_name}} {{last_name}}</div>
         <div class="friend_plus">
-            <img src="src/icons/plus.png" alt="plus" name={{id}}>
+            <img src="src/icons/plus.png" alt="plus" name={{id}} draggable="false">
         </div>
     </div>
     {{/each}}
