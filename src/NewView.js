@@ -117,19 +117,13 @@ function setupDnD(items, self) {
         // захват дива с другом 
         item.addEventListener('dragstart', e => {
             currentDrag = { source: item, friendId: e.target.getAttribute('name') };
+            e.dataTransfer.setData('text', 'anything');
         });
 
         // перетаскивание дива
         item.addEventListener('dragover', e => {
             e.preventDefault();
         });
-
-        // перетаскивание дива
-        // item.addEventListener('dragenter', e => {
-        //     e.preventDefault();
-
-        //     return false;
-        // });
 
         // отпускание дива с другом
         item.addEventListener('drop', e => {
