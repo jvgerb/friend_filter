@@ -1,4 +1,5 @@
 import { EventEmitter } from './helpers';
+
 /**
  * Model - Базовый класс модели
  */
@@ -19,10 +20,12 @@ export default class NewModel extends EventEmitter {
         this.filteredSelectedFriends = [];
     }
 
+    // получение значения свойства field из модели
     read(field) {
         return this[field];
     }
 
+    // поиск всех элементов в массиве modelField, чье поле searchField содержит в себе подстроку value
     searchBy({ modelField, searchField, value }) {
 
         return this[modelField].filter((item) => {
@@ -32,6 +35,8 @@ export default class NewModel extends EventEmitter {
         });
     }
 
+    // обновление свойства field модели значением data с последующим оповещением
+    // в случае обновления левого и правого видимого списка друзей
     update(field, data) {
         this[field] = data;
 
@@ -53,7 +58,7 @@ export default class NewModel extends EventEmitter {
     // selectedFriends - грузятся из localStorage
     init(friends, selectedFriends) {
 
-        this.addNameField(friends);
+        addNameField(friends);
 
         this.update('friends', friends);
         this.update('filteredFriends', [...friends]);
@@ -61,15 +66,7 @@ export default class NewModel extends EventEmitter {
         this.update('filteredSelectedFriends', [...selectedFriends]);
     }
 
-    // добавляет в массив друзей поле name для облегчения поиска
-    addNameField(friends) {
-        friends.forEach(el => {
-            el.name = `${el.first_name} ${el.last_name}`;
-        });
-
-        return friends;
-    }
-
+    // фильтрация левого списка друзей
     filterFriends(searchKey) {
         if (!searchKey) {
             this.update('filteredFriends', [...this.friends]);
@@ -85,6 +82,7 @@ export default class NewModel extends EventEmitter {
         this.update('filteredFriends', [...filtered]);
     }
 
+    // фильтрация правого списка друзей
     filterSelectedFriends(searchKey) {
         if (!searchKey) {
             this.update('filteredSelectedFriends', [...this.selectedFriends]);
@@ -101,21 +99,13 @@ export default class NewModel extends EventEmitter {
         this.update('filteredSelectedFriends', [...filtered]);
     }
 
-    // возвращает номер элемента в массиве list, у которого свойство id имеет указанное значение
-    getFriendIndexById(list, id) {
-        for (let i = 0; i < list.length; i++) {
-            if (list[i].id == id) {
-                return i;
-            }
-        }
-    }
-
+    // перенос друга из левого списка в правый
     selectFriend(id) {
         // удаляем друга из общего и фильтрованного списка людей слева
-        const leftFriendIndex1 = this.getFriendIndexById(this.friends, id),
+        const leftFriendIndex1 = getFriendIndexById(this.friends, id),
             leftFriend1 = this.friends.splice(leftFriendIndex1, 1)[0];
 
-        const leftFriendIndex2 = this.getFriendIndexById(this.filteredFriends, id),
+        const leftFriendIndex2 = getFriendIndexById(this.filteredFriends, id),
             leftFriend2 = this.filteredFriends.splice(leftFriendIndex2, 1)[0];
 
         // добавляем друга в общий и фильтрованный список справа
@@ -127,12 +117,13 @@ export default class NewModel extends EventEmitter {
         this.emit('filteredSelectedFriendsUpdated', this.filteredSelectedFriends);
     }
 
+    // перенос друга из правого списка в левый
     deselectFriend(id) {
         // удаляем друга из общего и фильтрованного списка людей справа
-        const rightFriendIndex1 = this.getFriendIndexById(this.selectedFriends, id),
+        const rightFriendIndex1 = getFriendIndexById(this.selectedFriends, id),
             rightFriend1 = this.selectedFriends.splice(rightFriendIndex1, 1)[0];
 
-        const rightFriendIndex2 = this.getFriendIndexById(this.filteredSelectedFriends, id),
+        const rightFriendIndex2 = getFriendIndexById(this.filteredSelectedFriends, id),
             rightFriend2 = this.filteredSelectedFriends.splice(rightFriendIndex2, 1)[0];
 
         // добавляем друга в общий и фильтрованный список слева
@@ -142,5 +133,30 @@ export default class NewModel extends EventEmitter {
         // оповещаем вью о необходимости перестроить списки
         this.emit('filteredFriendsUpdated', this.filteredFriends);
         this.emit('filteredSelectedFriendsUpdated', this.filteredSelectedFriends);
+    }
+}
+
+/**
+ * Добавляет в массив друзей friends поле name для облегчения поиска
+ * @param {*} friends 
+ */
+function addNameField(friends) {
+    friends.forEach(el => {
+        el.name = `${el.first_name} ${el.last_name}`;
+    });
+
+    return friends;
+}
+
+/**
+ * Возвращает номер элемента в массиве list, у которого свойство id имеет указанное значение
+ * @param {*} list 
+ * @param {*} id 
+ */
+function getFriendIndexById(list, id) {
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].id == id) {
+            return i;
+        }
     }
 }

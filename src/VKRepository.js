@@ -1,41 +1,51 @@
-export default function VKReporsitory(VK) {
+/**
+ * Класс предоставляет доступ к данным в соц. сети VK
+ */
+export default class VKReporsitory {
+    constructor(VKobj) {
+        VK = VKobj;
+    }
 
-    return {
-        login(appId, perms) {
-            return new Promise((resolve, reject) => {
-                VK.init({
-                    apiId: appId
-                });
-
-                VK.Auth.login(response => {
-                    if (response.session) {
-                        resolve(response);
-                    } else {
-                        reject(new Error('Не удалось авторизоваться'));
-                    }
-                }, perms);
+    login(appId, perms) {
+        return new Promise((resolve, reject) => {
+            VK.init({
+                apiId: appId
             });
-        },
-        callApi(method, params) {
-            params.v = params.v || '5.78';
 
-            return new Promise((resolve, reject) => {
-                VK.api(method, params, response => {
-                    if (response.error) {
-                        reject(new Error(response.error.error_msg));
-                    } else {
-                        resolve(response.response);
-                    }
-                });
+            VK.Auth.login(response => {
+                if (response.session) {
+                    resolve(response);
+                } else {
+                    reject(new Error('Не удалось авторизоваться'));
+                }
+            }, perms);
+        });
+    }
+
+    callApi(method, params) {
+        params.v = params.v || '5.78';
+
+        return new Promise((resolve, reject) => {
+            VK.api(method, params, response => {
+                if (response.error) {
+                    reject(new Error(response.error.error_msg));
+                } else {
+                    resolve(response.response);
+                }
             });
-        },
-        getUser(params = {}) {
-            return this.callApi('users.get', params);
-        },
-        getFriends(params = {}) {
-            return this.callApi('friends.get', params);
-        },
-    };
+        });
+    }
+
+    getUser(params = {}) {
+        return this.callApi('users.get', params);
+    }
+
+    getFriends(params = {}) {
+        return this.callApi('friends.get', params);
+    }
 }
 
-// задача - получение данных
+/**
+ * Объект для работы с функциями VK скрыт от экспорта
+ */
+var VK;

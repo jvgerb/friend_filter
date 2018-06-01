@@ -139,11 +139,13 @@ body {
     padding: 8px;
 }
 
-#save {
+#save,
+#delete {
     background: #ff8663;
     color: #fff;
     border: none;
     border-radius: 10px;
     font-size: 14px;
     padding: 8px 14px;
+    margin: 0 3px;
 }

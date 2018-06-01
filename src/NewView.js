@@ -2,6 +2,9 @@ import { EventEmitter } from './helpers';
 import renderFriends from '../views/friends.hbs';
 import renderSelectedfriends from '../views/selected-friends.hbs';
 
+/**
+ * Класс представления
+ */
 export default class View extends EventEmitter {
     constructor() {
         super();
@@ -10,6 +13,8 @@ export default class View extends EventEmitter {
         this.searchSelectedFriend = document.querySelector('#search_right');
         this.listLeft = document.querySelector('#lists-left');
         this.listRight = document.querySelector('#lists-right');
+        this.saveBtn = document.querySelector('#save');
+        this.deleteBtn = document.querySelector('#delete');
 
         // мэппинг между именем шаблона и функцией рендера
         this.renderMap = new Map(
@@ -31,11 +36,17 @@ export default class View extends EventEmitter {
         this.initListeners();
     }
 
-    /**
-     * Заполненняет шаблон из .hbs-файла данными из переданной модели и вставляет их в html страницы
-     * @param {string} templateName - имя шаблона 
-     * @param {object} model - данные 
-     */
+    // заполнить левый список друзей
+    renderFriends(friends) {
+        this.render('friends-left', friends);
+    }
+
+    // заполнить правый список друзей
+    renderSelectedFriends(friends) {
+        this.render('friends-right', friends);
+    }
+
+    // Заполненняет шаблон из .hbs-файла данными из переданной модели и вставляет их в html страницы
     render(templateName, model) {
         const renderFunc = this.renderMap.get(templateName),
             htmlContainer = this.containerMap.get(templateName);
@@ -50,12 +61,9 @@ export default class View extends EventEmitter {
         }
     }
 
-    renderFriends(friends) {
-        this.render('friends-left', friends);
-    }
-
-    renderSelectedFriends(friends) {
-        this.render('friends-right', friends);
+    // показать юзеру сообщение
+    notifyUser(message) {
+        alert(message);
     }
 
     initListeners() {
@@ -79,6 +87,16 @@ export default class View extends EventEmitter {
             if (e.target.tagName === 'IMG' && e.target.getAttribute('alt') === 'minus') {
                 this.emit('deselectFriend', e.target.name);
             }
+        });
+
+        // сохранение правого списка
+        this.saveBtn.addEventListener('click', e => {
+            this.emit('save', e.target);
+        });
+
+        // удаление правого списка
+        this.deleteBtn.addEventListener('click', e => {
+            this.emit('delete', e.target);
         });
     }
 }
